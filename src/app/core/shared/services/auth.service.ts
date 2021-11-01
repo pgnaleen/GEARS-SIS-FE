@@ -1,0 +1,47 @@
+import {Injectable} from '@angular/core';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {User} from '../model/user';
+import {Observable, BehaviorSubject} from 'rxjs';
+import {Router} from '@angular/router';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthService {
+
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
+
+    constructor(public jwtHelper: JwtHelperService, private router: Router) {
+        const loggedUser = localStorage.getItem('currentUser')
+        let convertedUser;
+        if (loggedUser) {
+            convertedUser = JSON.parse(loggedUser);
+        }
+        this.currentUserSubject = new BehaviorSubject<User>(convertedUser);
+        this.currentUser = this.currentUserSubject.asObservable();
+    }
+
+    public isAuthenticated(): boolean {
+        const token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItZG1PdjlCQm9mWVlzaTQyLUR3QW5XRTNTV2tfM0pnOE80b2k2NEMzYW1NIn0.eyJleHAiOjE2Mjk4MzAzMjQsImlhdCI6MTYyOTgzMDAyNCwiYXV0aF90aW1lIjoxNjI5ODMwMDIzLCJqdGkiOiIyNWQ5YWUyNy0wMjM3LTRmZDItYmVjYy0wNWVmMGNkNzUyYTQiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODkvYXV0aC9yZWFsbXMvc3NvLXRlc3QiLCJhdWQiOlsicmVhbG0tbWFuYWdlbWVudCIsImJhY2tlbmQiLCJhY2NvdW50Il0sInN1YiI6Ijk0NWUxZWIzLTMxYjMtNGZlZS1iYjY3LWU5NTk4MzVmNDkzMiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFuZ3VsYXIiLCJub25jZSI6IjI2NTA3OTEyLTY3NDItNGYwOS1iNzU4LTkwYTA5NTI0NjVjYyIsInNlc3Npb25fc3RhdGUiOiJkZmM5M2JjZS02MjMyLTQ1ZDItYTNkNS0xOTljODdkYjg3MGQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbInN1cGVyLWFkbWluIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtc3NvLXRlc3QiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImJhY2tlbmQiOnsicm9sZXMiOlsidXNlci1tYW5hZ2UiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJkZmM5M2JjZS02MjMyLTQ1ZDItYTNkNS0xOTljODdkYjg3MGQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IlRoaWxhbjEgTWFkdXNhbmthMSIsImdyb3VwcyI6W10sInByZWZlcnJlZF91c2VybmFtZSI6InRoaWxhbm1qIiwiZ2l2ZW5fbmFtZSI6IlRoaWxhbjEiLCJmYW1pbHlfbmFtZSI6Ik1hZHVzYW5rYTEiLCJlbWFpbCI6InRoaWxhbjg3MTg5QGdtYWlsLmNvbSJ9.NjpqjNDpHF28gbQg-C1-sAOZsOAOeapSMs0fe_IknDaKhtI-ca2B0ITcg8D4Leltr97ovcXf5zi4ECG7IkiJWIxoG4dCrU39dn5VIwrh-ML3HfJ2KyHN2rtqqdLbJY4knF4Eg6rgLyburGuSKL3T3A4zxLplXYG9B92_FMPFJfl0OQOkbjizSI6-Qhi7WLh3lg5FjCpBXzCTa5nSC07oFYkq-oeddldK3sqZUrFmL0oChozWagfWQhM3L4TfPpshpRtoPsJVBChl49kwgx1nJpqZcYowMNmNzyI0jyI8OUYoOJZRhsOf7aUU1JEG3V73Vn85T6fXUG3frnbqd91YBA'; //localStorage.getItem('token');
+        return !this.jwtHelper.isTokenExpired(token);
+    }
+
+    public currentUserValue() {
+        return this.currentUserSubject.value;
+    }
+
+    public login() {
+        const user = new User();
+        user.firstName = '';
+        user.lastName = '';
+        user.username = '';
+        user.token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItZG1PdjlCQm9mWVlzaTQyLUR3QW5XRTNTV2tfM0pnOE80b2k2NEMzYW1NIn0.eyJleHAiOjE2Mjk4MzAzMjQsImlhdCI6MTYyOTgzMDAyNCwiYXV0aF90aW1lIjoxNjI5ODMwMDIzLCJqdGkiOiIyNWQ5YWUyNy0wMjM3LTRmZDItYmVjYy0wNWVmMGNkNzUyYTQiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODkvYXV0aC9yZWFsbXMvc3NvLXRlc3QiLCJhdWQiOlsicmVhbG0tbWFuYWdlbWVudCIsImJhY2tlbmQiLCJhY2NvdW50Il0sInN1YiI6Ijk0NWUxZWIzLTMxYjMtNGZlZS1iYjY3LWU5NTk4MzVmNDkzMiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFuZ3VsYXIiLCJub25jZSI6IjI2NTA3OTEyLTY3NDItNGYwOS1iNzU4LTkwYTA5NTI0NjVjYyIsInNlc3Npb25fc3RhdGUiOiJkZmM5M2JjZS02MjMyLTQ1ZDItYTNkNS0xOTljODdkYjg3MGQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbInN1cGVyLWFkbWluIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtc3NvLXRlc3QiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImJhY2tlbmQiOnsicm9sZXMiOlsidXNlci1tYW5hZ2UiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJkZmM5M2JjZS02MjMyLTQ1ZDItYTNkNS0xOTljODdkYjg3MGQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IlRoaWxhbjEgTWFkdXNhbmthMSIsImdyb3VwcyI6W10sInByZWZlcnJlZF91c2VybmFtZSI6InRoaWxhbm1qIiwiZ2l2ZW5fbmFtZSI6IlRoaWxhbjEiLCJmYW1pbHlfbmFtZSI6Ik1hZHVzYW5rYTEiLCJlbWFpbCI6InRoaWxhbjg3MTg5QGdtYWlsLmNvbSJ9.NjpqjNDpHF28gbQg-C1-sAOZsOAOeapSMs0fe_IknDaKhtI-ca2B0ITcg8D4Leltr97ovcXf5zi4ECG7IkiJWIxoG4dCrU39dn5VIwrh-ML3HfJ2KyHN2rtqqdLbJY4knF4Eg6rgLyburGuSKL3T3A4zxLplXYG9B92_FMPFJfl0OQOkbjizSI6-Qhi7WLh3lg5FjCpBXzCTa5nSC07oFYkq-oeddldK3sqZUrFmL0oChozWagfWQhM3L4TfPpshpRtoPsJVBChl49kwgx1nJpqZcYowMNmNzyI0jyI8OUYoOJZRhsOf7aUU1JEG3V73Vn85T6fXUG3frnbqd91YBA';
+        user.email = 'thilan.madusanka@gears-int.com';
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        if (user) {
+            console.log('redirect to dash')
+            this.router.navigate(['/dashboard'])
+        }
+    }
+}

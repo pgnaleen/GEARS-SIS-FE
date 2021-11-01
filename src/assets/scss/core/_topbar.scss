@@ -1,0 +1,22 @@
+.topbar {
+  position: relative;
+  top: 0px;
+  float: top;
+  height: 50px;
+  z-index: 3000;
+  width: 100%;
+}
+
+.logo-img{
+  width: 105px;
+  display: block;
+  max-height: 47px;
+  margin-top: 20px;
+  margin-left: 13px;
+
+  img{
+    width: 105px;
+    top: 0px;
+    position: absolute;
+  }
+}
