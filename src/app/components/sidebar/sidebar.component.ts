@@ -7,8 +7,17 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
+
+
+ const allowssidemenuitems = ['admin', 'dashoboard'];
+
+// admin.add.info
+// admin.add.user
 export const ROUTES: RouteInfo[] = [
-    // { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
+  // {}
+    // { key: 'admin.add.user', path: '/useradd', title: 'Dashboard',  icon: 'dashboard', class: '' },
+    // { key: 'admin.add.info', path: '/infoadd', title: 'Dashboard',  icon: 'dashboard', class: '' },
+    // { key: 'admin.add', path: '/add', title: 'Dashboard',  icon: 'dashboard', class: '' },
     { path: '/admin', title: 'Admin',  icon: 'assignment_ind', class: '' }
 ];
 
@@ -22,7 +31,7 @@ export class SidebarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.menuItems = ROUTES.filter(menuItem => menuItem);// forloop
   }
   isMobileMenu() {
       if ($(window).width() > 991) {

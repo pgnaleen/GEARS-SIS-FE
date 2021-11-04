@@ -7,3 +7,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'admin',      component: AdminComponent }
 ];
+
+
