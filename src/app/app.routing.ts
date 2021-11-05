@@ -39,10 +39,10 @@ export const rootRoutes: Routes = [  {
   imports: [
     CommonModule,
     BrowserModule,
-    // RouterModule.forRoot(routes, {
-    //    useHash: true
-    // })
-    RouterModule.forRoot(rootRoutes)
+    RouterModule.forRoot(routes, {
+       useHash: true
+    })
+    // RouterModule.forRoot(rootRoutes)
   ],
   exports: [RouterModule]
 })
