@@ -1,6 +1,6 @@
 <div class="sidebar-wrapper">
-    <div *ngIf="isMobileMenu()">
-        <form class="navbar-form">
+  <div *ngIf="isMobileMenu()">
+    <form class="navbar-form">
       <span class="bmd-form-group">
         <div class="input-group no-border">
           <input type="text" value="" class="form-control" placeholder="Search...">
@@ -10,24 +10,40 @@
           </button>
         </div>
       </span>
-        </form>
-        <ul class="nav navbar-nav nav-mobile-menu">
-            <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                    <i class="material-icons">person</i>
-                    <p>
-                        <span class="d-lg-none d-md-block">Account</span>
-                    </p>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <ul class="nav">
-        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-            <a class="nav-link" [routerLink]="[menuItem.path]">
-                <i class="material-icons">{{menuItem.icon}}</i>
-                <p>{{menuItem.title}}</p>
-            </a>
-        </li>
+    </form>
+    <ul class="nav navbar-nav nav-mobile-menu">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0)">
+          <i class="material-icons">person</i>
+          <p>
+            <span class="d-lg-none d-md-block">Account</span>
+          </p>
+        </a>
+      </li>
     </ul>
+  </div>
+  <ul class="nav">
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+      <a class="nav-link" [routerLink]="[menuItem.path]">
+        <i class="material-icons">{{menuItem.icon}}</i>
+        <p>{{menuItem.title}}</p>
+      </a>
+      <ul *ngIf="menuItem.children && menuItem.children.length > 0" class="nav-child">
+        <li routerLinkActive="active" *ngFor="let child of menuItem.children" class="{{child.class}} nav-item-child">
+          <a class="nav-link" [routerLink]="[child.path]">
+            <i class="material-icons">{{child.icon}}</i>
+            <p>{{child.title}}</p>
+          </a>
+          <ul *ngIf="child.children && child.children.length > 0" class="nav-child">
+            <li routerLinkActive="active" *ngFor="let childchild of child.children" class="{{child.class}} nav-item-child">
+              <a class="nav-link" [routerLink]="[childchild.path]">
+                <i class="material-icons">{{childchild.icon}}</i>
+                <p>{{childchild.title}}</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>

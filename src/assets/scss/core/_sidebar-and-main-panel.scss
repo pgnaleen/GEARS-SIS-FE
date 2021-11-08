@@ -215,13 +215,22 @@
           margin: 10px 15px 0;
           border-radius: $border-radius-base;
           color: $black-color;
-          padding-left: 10px;
-          padding-right: 10px;
+          //padding-left: 10px;
+          //padding-right: 10px;
           text-transform: capitalize;
           font-size: $font-paragraph - 1;
           padding: 10px 15px;
     }
 
+  .nav-child li a,
+  .nav-child li .dropdown-menu a{
+    margin: 10px 15px 0;
+    border-radius: $border-radius-base;
+    color: $black-color;
+    text-transform: capitalize;
+    font-size: $font-paragraph - 4;
+    padding: 5px 8px;
+  }
 
     .sidebar-background{
         position: absolute;
@@ -509,4 +518,20 @@
         }
       }
     }
+}
+
+.nav-child {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  list-style: none;
+  width: 100%;
+  padding-left: 16px;
+  margin-top: 4px;
+}
+
+.nav-item-child {
+  @extend .nav-item;
+
+  width: inherit;
 }
