@@ -27,12 +27,12 @@ import {ComponentsModule} from './components/components.module';
     AppComponent,
     AdminLayoutComponent
   ],
-  // providers: [{
-  //   provide: APP_INITIALIZER,
-  //   useFactory: initializeKeycloak,
-  //   multi: true,
-  //   deps: [KeycloakService],
-  // }],
+  providers: [{
+    provide: APP_INITIALIZER,
+    useFactory: initializeKeycloak,
+    multi: true,
+    deps: [KeycloakService],
+  }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

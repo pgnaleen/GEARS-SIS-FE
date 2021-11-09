@@ -6,7 +6,8 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080' + '/auth',
+        url: 'http://10.0.0.11:8082' + '/auth',
+        // url: 'http://localhost:8080' + '/auth',
         realm: 'gutech',
         clientId: 'sis-fe',
       },
