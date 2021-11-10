@@ -3,13 +3,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AllReportColumns} from '../model/allreportcolumns';
 import {SelectedColumnJoins} from '../model/selectedcolumnjoins';
 import {ReportData} from '../model/reportdata';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReportsDataServiceComponent {
 
-    private REST_API_SERVER = 'http://localhost:8385';
+    private REST_API_SERVER = environment.apiUrl;
 
     // Http Headers
     httpOptions = {
