@@ -1,4 +1,5 @@
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from 'environments/environment';
 
 export function initializeKeycloak(
   keycloak: KeycloakService
@@ -6,8 +7,7 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
       config: {
-        url: 'http://10.0.0.11:8082' + '/auth',
-        // url: 'http://localhost:8080' + '/auth',
+        url: environment.authUrl + '/auth',
         realm: 'gutech',
         clientId: 'sis-fe',
       },
