@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
+import { Roles } from 'app/core/shared/model/roles';
 import {AllReportColumns} from '../core/shared/model/allreportcolumns';
 import {ReportsDataServiceComponent} from '../core/shared/services/reports-data-service-component.service';
 
@@ -11,15 +12,15 @@ import {ReportsDataServiceComponent} from '../core/shared/services/reports-data-
 
 
 export class AdminComponent implements OnInit {
-  allReportColumns: AllReportColumns;
+  roles: Roles;
 
   constructor(private dataService: ReportsDataServiceComponent) {
   }
   ngOnInit(): void {
     // get all the report columns to show on first report step
-    this.dataService.sendGetRequest().subscribe((data: AllReportColumns) => {
+    this.dataService.sendGetRequest().subscribe((data: Roles) => {
       console.log(data);
-      this.allReportColumns = data;
+      this.roles = data;
     });
   };
 }

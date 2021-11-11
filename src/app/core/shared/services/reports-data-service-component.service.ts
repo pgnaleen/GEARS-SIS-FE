@@ -4,6 +4,7 @@ import {AllReportColumns} from '../model/allreportcolumns';
 import {SelectedColumnJoins} from '../model/selectedcolumnjoins';
 import {ReportData} from '../model/reportdata';
 import { environment } from 'environments/environment';
+import { Roles } from '../model/roles';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,6 @@ export class ReportsDataServiceComponent {
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json'
-          // , 'Authorization': 'Basic ' + btoa('nalin:nalin')
         })
     }
 
@@ -44,7 +44,7 @@ export class ReportsDataServiceComponent {
     }
 
     public sendGetRequest() {
-        return this.httpClient.get<AllReportColumns>(this.REST_API_SERVER + '/report-details/all-report-columns',
+        return this.httpClient.get<Roles>(this.REST_API_SERVER + '/api/v1/roles',
             this.httpOptions);
     }
 
