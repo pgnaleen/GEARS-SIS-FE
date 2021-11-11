@@ -1,27 +1,10 @@
 <div class="sidebar-wrapper">
-  <div *ngIf="isMobileMenu()">
-    <form class="navbar-form">
-      <span class="bmd-form-group">
-        <div class="input-group no-border">
-          <input type="text" value="" class="form-control" placeholder="Search...">
-          <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
-            <i class="material-icons">search</i>
-            <div class="ripple-container"></div>
-          </button>
-        </div>
-      </span>
-    </form>
-    <ul class="nav navbar-nav nav-mobile-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0)">
-          <i class="material-icons">person</i>
-          <p>
-            <span class="d-lg-none d-md-block">Account</span>
-          </p>
-        </a>
-      </li>
-    </ul>
+  <div class="logo">
+    <a class="navbar-brand p-0" href="#/"><img src="/assets/img/logo.png" /></a>
+    <button type="button" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"
+        class="navbar-toggler navbar-toggler-right"><span class="navbar-toggler-icon"></span></button>
   </div>
+  
   <ul class="nav">
     <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
       <a class="nav-link" [routerLink]="[menuItem.path]">
