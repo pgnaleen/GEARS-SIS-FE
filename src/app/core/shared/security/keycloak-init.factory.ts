@@ -8,7 +8,7 @@ export function initializeKeycloak(
     keycloak.init({
       config: {
         url: environment.authUrl + '/auth',
-        realm: 'gutech',
+        realm: environment.keyCloakRealm,
         clientId: 'sis-fe',
       },
       loadUserProfileAtStartUp: false,
