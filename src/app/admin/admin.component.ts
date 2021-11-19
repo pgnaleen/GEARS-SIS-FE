@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
 import { Roles } from 'app/core/shared/model/roles';
-import {AllReportColumns} from '../core/shared/model/allreportcolumns';
 import {ReportsDataServiceComponent} from '../core/shared/services/reports-data-service-component.service';
 
 @Component({

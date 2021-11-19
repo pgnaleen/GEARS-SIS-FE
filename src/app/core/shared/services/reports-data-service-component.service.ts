@@ -11,7 +11,7 @@ import { Roles } from '../model/roles';
 })
 export class ReportsDataServiceComponent {
 
-    private REST_API_SERVER = environment.apiUrl;
+    private REST_API_SERVER = environment.adminAPIServer;
 
     // Http Headers
     httpOptions = {

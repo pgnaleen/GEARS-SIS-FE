@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {User} from '../model/user';
 import {Observable, BehaviorSubject} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
+import {Roles} from '../model/roles';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,14 @@ export class AuthService {
   private AUTH_SERVER: string;
   private KEYCLOAK_REALM: string;
   private REDIRECT_URL: string;
+  private ADMIN_API_SERVER: string;
+
+  // Http Headers
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
+  }
 
   constructor(private httpClient: HttpClient) {
     const loggedUser = localStorage.getItem('currentUser')
@@ -27,16 +36,25 @@ export class AuthService {
     this.AUTH_SERVER = environment.authUrl;
     this.KEYCLOAK_REALM = environment.keyCloakRealm;
     this.REDIRECT_URL = environment.redirectUrl;
+    this.ADMIN_API_SERVER = environment.adminAPIServer;
   }
 
   public currentUserValue() {
     return this.currentUserSubject.value;
   }
 
-
   public logout() {
     console.log('auth service logout');
-    window.location.href = this.AUTH_SERVER + '/auth/realms/' + this.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
-      + this.REDIRECT_URL;
+
+    // call back end admin api for logout backend keycloak client
+    const requestBody = '';
+    this.httpClient.post<any>(this.ADMIN_API_SERVER + '/api/v1/auth/logout',
+      requestBody, this.httpOptions).subscribe((data: any) => {
+      console.log(data);
+    });
+
+    // call keycloak logout api for logout front end client and redirect home page to keycloak login page
+    window.location.href = this.AUTH_SERVER + '/realms/' + this.KEYCLOAK_REALM
+      + '/protocol/openid-connect/logout?redirect_uri=' + this.REDIRECT_URL;
   }
 }

@@ -13,27 +13,29 @@ import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 import {ComponentsModule} from './components/components.module';
 
 @NgModule({
-  imports: [
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ComponentsModule,
-    RouterModule,
-    AppRoutingModule,
-    KeycloakAngularModule
-  ],
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent
-  ],
-  providers: [{
-    provide: APP_INITIALIZER,
-    useFactory: initializeKeycloak,
-    multi: true,
-    deps: [KeycloakService],
-  }],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        ComponentsModule,
+        RouterModule,
+        AppRoutingModule,
+        KeycloakAngularModule
+    ],
+    declarations: [
+        AppComponent,
+        AdminLayoutComponent
+    ],
+    providers: [{
+        provide: APP_INITIALIZER,
+        useFactory: initializeKeycloak,
+        multi: true,
+        deps: [KeycloakService],
+    }],
+    bootstrap: [AppComponent],
+    exports: [
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
