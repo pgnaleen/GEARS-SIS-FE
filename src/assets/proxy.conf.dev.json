@@ -1,6 +1,6 @@
 {
-  "/movies": {
-    "target": "http://localhost:9000",
+  "/test": {
+    "target": "http://localhost:8080/auth",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

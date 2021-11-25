@@ -7,6 +7,7 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
       config: {
+        // url: '/auth',
         url: environment.authUrl,
         realm: environment.keyCloakRealm,
         clientId: 'sis-fe',

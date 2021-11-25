@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, } from '@angular/common';
-import { BrowserModule  } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
+import {Routes, RouterModule} from '@angular/router';
 
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { AuthGuard } from './core/shared/guard/auth.guard';
+import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
+import {AuthGuard} from './core/shared/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,18 +21,23 @@ const routes: Routes = [
   }
 ];
 
-export const rootRoutes: Routes = [  {
-  path: '',
-  redirectTo: 'admin',
-  pathMatch: 'full',
-},
-  { path: '', component: AdminLayoutComponent,
+export const rootRoutesWithAuth: Routes = [
+  {
+    path: '',
+    redirectTo: 'admin',
+    pathMatch: 'full',
+  },
+  {
+    path: '', component: AdminLayoutComponent,
     children: [{
       path: '',
       loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule)
     }],
-    canActivate: [AuthGuard]},
-  { path: '**', redirectTo: '' }
+    canActivate: [AuthGuard]
+  },
+  {
+    path: '**', redirectTo: ''
+  }
 ];
 
 @NgModule({
@@ -42,8 +47,9 @@ export const rootRoutes: Routes = [  {
     // RouterModule.forRoot(routes, {
     //    useHash: true
     // })
-    RouterModule.forRoot(rootRoutes)
+    RouterModule.forRoot(rootRoutesWithAuth)
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

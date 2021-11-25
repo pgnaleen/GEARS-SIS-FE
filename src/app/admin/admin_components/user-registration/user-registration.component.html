@@ -1,1 +1,47 @@
-<p>user-registration works!</p>
+<div class="search-div">
+  <button mat-raised-button (click)="onUserAdd()">
+    <mat-icon>add</mat-icon>
+    Add
+  </button>
+  <mat-form-field floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="search" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+<!--      matSuffix - this button will be set as suffix for above text box-->
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="matDataSource" matSort>
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.username}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.firstName}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.lastName}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button (click)="onUpdate(row)"><mat-icon>remove_red_eye</mat-icon></button>
+        <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <!-- this is for header template matHeaderRowDef directive, header row is header row which contain column header-->
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <!-- template for table body. matRowDef apply table body characteristics, row uses rendering of table body.
+     after these two elements need to define each cell of both header and body -->
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" pageSize="5" showFirstLastButtons></mat-paginator>
+</div>

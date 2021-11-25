@@ -3,7 +3,6 @@ import {User} from '../model/user';
 import {Observable, BehaviorSubject} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {Roles} from '../model/roles';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +43,6 @@ export class AuthService {
   }
 
   public logout() {
-    console.log('auth service logout');
-
     // call back end admin api for logout backend keycloak client
     const requestBody = '';
     this.httpClient.post<any>(this.ADMIN_API_SERVER + '/api/v1/auth/logout',
@@ -56,5 +53,14 @@ export class AuthService {
     // call keycloak logout api for logout front end client and redirect home page to keycloak login page
     window.location.href = this.AUTH_SERVER + '/realms/' + this.KEYCLOAK_REALM
       + '/protocol/openid-connect/logout?redirect_uri=' + this.REDIRECT_URL;
+  }
+
+  public getUsername() {
+    return this.httpClient.get<any>(this.ADMIN_API_SERVER + '/api/v1/users/username',
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      });
   }
 }

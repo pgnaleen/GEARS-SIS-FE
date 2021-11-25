@@ -3,6 +3,7 @@ import {ROUTES} from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/shared/services/auth.service';
+import {Response} from '../../core/shared/response/response';
 
 @Component({
   selector: 'app-navbar',
@@ -14,15 +15,20 @@ export class NavbarComponent implements OnInit {
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
-  private authService: AuthService;
+  public username: string;
+  public authService: AuthService;
 
-  constructor(location: Location, private element: ElementRef, private router: Router, private auth: AuthService) {
+  constructor(location: Location, private element: ElementRef, private router: Router,
+              private auth: AuthService) {
     this.location = location;
     this.sidebarVisible = false;
     this.authService = auth;
   }
 
   ngOnInit() {
+    this.authService.getUsername().subscribe((response: Response) => {
+      this.username = response.payload;
+    });
     this.listTitles = ROUTES.filter(listTitle => listTitle);
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -114,16 +120,27 @@ export class NavbarComponent implements OnInit {
   };
 
   getTitle() {
-    let titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === '#') {
-      titlee = titlee.slice(1);
+    let title = this.location.prepareExternalUrl(this.location.path());
+    if (title.charAt(0) === '#') {
+      title = title.slice(1);
     }
 
     for (let item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
+
+      if (this.listTitles[item].path === title) {
         return this.listTitles[item].title;
       }
+
+      // if any menu has level 1 children then go inside one level and check title
+      if (this.listTitles[item].children) {
+        for (let children = 0; children < this.listTitles[item].children.length; children++) {
+          if (this.listTitles[item].children[children].path === title) {
+            return this.listTitles[item].children[children].title;
+          }
+        }
+      }
     }
+
     return 'Dashboard';
   }
 

@@ -1,0 +1,54 @@
+<mat-toolbar>
+  <span>Add User</span>
+</mat-toolbar>
+<form  *ngIf="roles !== undefined" [formGroup]="regService.form" class="normal-form">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="controls-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field>
+          <input matInput formControlName="username" placeholder="Username*">
+          <mat-error>This field is mandatory.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="password" type="password" placeholder="Password*">
+          <mat-error>This field is mandatory.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email*">
+          <mat-error>Invalid email.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="roleId" placeholder="Role*">
+            <ng-container *ngFor="let role of roles.payload">
+              <mat-option value="{{role.id}}">{{role.name}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="controls-container">
+        <mat-form-field>
+          <input matInput formControlName="firstName" placeholder="First Name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="lastName" placeholder="Last Name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="dob" [matDatepicker]="picker" placeholder="Date of Birth">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="phoneNo" placeholder="Phone Number">
+          <mat-error>Minimum 10 characters needed.</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div *ngIf="regService.form.getRawValue().id === null" class="button-row">
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="regService.form.invalid">Submit</button>
+  </div>
+</form>
