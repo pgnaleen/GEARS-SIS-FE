@@ -5,6 +5,6 @@ export const environment = {
   // adminAPIServer: 'http://localhost:8089',
   adminAPIServer: 'http://10.0.0.11:8284',
   // redirectUrl: 'http://localhost:4200',
-  redirectUrl: 'http://10.0.0.11:4200',
+  redirectUrl: 'http://10.0.0.11:8844',
   keyCloakRealm: 'gutech'
 };
