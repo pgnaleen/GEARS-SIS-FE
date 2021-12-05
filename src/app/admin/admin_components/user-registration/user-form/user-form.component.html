@@ -1,5 +1,10 @@
 <mat-toolbar>
-  <span>Add User</span>
+  <span>{{this.regService.form.getRawValue().id?'Update User':'Add User'}}</span>
+  <span class="fill-remaining-space"></span> <!--  fill space between topic and close button-->
+  <button class="btn-dialog-close"  mat-stroked-button (click)="onClose()" tabindex="-1">
+<!--    tabindex="-1" so at start this button not get focus-->
+    <mat-icon>clear</mat-icon>
+  </button>
 </mat-toolbar>
 <form  *ngIf="roles !== undefined" [formGroup]="regService.form" class="normal-form">
   <mat-grid-list cols="2" rowHeight="300px">
@@ -7,19 +12,23 @@
       <div class="controls-container">
         <input type="hidden" formControlName="id">
         <mat-form-field>
+<!--          as mandatory field validation is added to formController it self not as [!required] like other fields-->
           <input matInput formControlName="username" placeholder="Username*">
           <mat-error>This field is mandatory.</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="password" type="password" placeholder="Password*">
+<!--          placeholder * not needed as [!required] will add * after the palce holder. [!required] needed as
+validation only for add user-->
+          <input matInput formControlName="password" type="password" placeholder="Password"
+                 [required]="!regService.form.getRawValue().id">
           <mat-error>This field is mandatory.</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput formControlName="email" placeholder="Email*">
+          <input matInput formControlName="email" placeholder="Email" [required]="!regService.form.getRawValue().id">
           <mat-error>Invalid email.</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <mat-select formControlName="roleId" placeholder="Role*">
+          <mat-select formControlName="roleId" placeholder="Role" [required]="!regService.form.getRawValue().id">
             <ng-container *ngFor="let role of roles.payload">
               <mat-option value="{{role.id}}">{{role.name}}</mat-option>
             </ng-container>
@@ -47,8 +56,11 @@
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-  <div *ngIf="regService.form.getRawValue().id === null" class="button-row">
+<!--   *ngIf="regService.form.getRawValue().id === null"-->
+  <div class="button-row">
     <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="regService.form.invalid">Submit</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="regService.form.invalid">
+      {{this.regService.form.getRawValue().id?'Update':'Add'}}
+    </button>
   </div>
 </form>

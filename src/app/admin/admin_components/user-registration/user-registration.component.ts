@@ -66,4 +66,22 @@ export class UserRegistrationComponent implements OnInit {
     dialogConfig.width = '40%';
     this.dialog.open(UserFormComponent, dialogConfig); // same singleton register service with values for the form set up will be loaded
   }
+
+  onDelete(row) {
+    if (confirm('Delete user ' + row.username + ' confirmation?')) {
+      this.dataService.deleteUserData(row.username).subscribe((response) => {
+        console.log(response);
+
+        if (response.statusCode === 200) {
+          this.notificationService.showNotification('::' + response.message);
+        } else if (response.statusCode === 4600) {
+          this.notificationService.showNotification('::' + response.message);
+        } else {
+          this.notificationService.showNotification('::Error occurred, Try again.');
+        }
+
+        this.dataService.reloadComponent(); // reload user registration page only after user creation successful
+      });
+    }
+  }
 }
