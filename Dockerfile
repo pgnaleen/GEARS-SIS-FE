@@ -1,4 +1,4 @@
-FROM node:14-buster as build-stage
+FROM node:16-buster as build-stage
 
 WORKDIR /app
 
