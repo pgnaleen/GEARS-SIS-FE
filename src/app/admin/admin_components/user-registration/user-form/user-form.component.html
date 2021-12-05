@@ -13,7 +13,7 @@
         <input type="hidden" formControlName="id">
         <mat-form-field>
 <!--          as mandatory field validation is added to formController it self not as [!required] like other fields-->
-          <input matInput formControlName="username" placeholder="Username*">
+          <input matInput formControlName="username" placeholder="Username*" [readonly]="regService.form.getRawValue().id">
           <mat-error>This field is mandatory.</mat-error>
         </mat-form-field>
         <mat-form-field>
